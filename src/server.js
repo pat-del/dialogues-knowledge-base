@@ -1,19 +1,13 @@
 import 'dotenv/config';
 import express from 'express';
 import { ask } from './agent.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 const app = express();
 app.use(express.json());
-import { fileURLToPath } from 'url';
-import path from 'path';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, '../public')));
-
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
 
 app.get('/', (req, res) => {
   res.json({ status: 'Dialogues Knowledge Base API is running' });
@@ -24,8 +18,14 @@ app.post('/ask', async (req, res) => {
   if (!question) {
     return res.status(400).json({ error: 'Question is required' });
   }
-  const answer = await ask(question);
-  res.json({ question, answer });
+
+  try {
+    const answer = await ask(question);
+    return res.json({ question, answer });
+  } catch (error) {
+    console.error('Error answering question:', error);
+    return res.status(500).json({ error: 'Unable to answer the question at this time' });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
