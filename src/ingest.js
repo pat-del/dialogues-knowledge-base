@@ -71,6 +71,6 @@ async function ingestTranscript(filePath, episodeTitle) {
 
 // Run it
 ingestTranscript(
-  path.join(process.cwd(), 'episode1.txt'),
-  'Episode 1 - The Manosphere'
+  path.join(process.cwd(), 'Euthanasia1.txt'),
+  'Episode 2 - Assisted Suicide & Euthanasia'
 );
