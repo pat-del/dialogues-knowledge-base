@@ -52,14 +52,3 @@ export async function retrieve(question, topK = 3) {
   scored.sort((a, b) => b.similarity - a.similarity);
   return scored.slice(0, topK);
 }
-
-// Test
-const question = "What did the hosts say about the manosphere?";
-const results = await retrieve(question);
-
-console.log(`\nTop ${results.length} results for: "${question}"\n`);
-results.forEach((r, i) => {
-  console.log(`--- Result ${i + 1} (similarity: ${r.similarity.toFixed(3)}) ---`);
-  console.log(r.content.slice(0, 200));
-  console.log();
-});
